@@ -19,6 +19,4 @@ public class AuthController {
         return userService.loginVerification(loginRequest);
     }
 
-
-
 }

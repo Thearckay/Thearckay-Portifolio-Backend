@@ -2,9 +2,9 @@ package com.thearckay.portifolio.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.thearckay.portifolio.dto.Token;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +65,12 @@ public class JwtService {
         } catch (RuntimeException e) {
             return null;
         }
+    }
+
+    public String getTokenfromHeaderRequestOrNull(HttpServletRequest httpRequest){
+        String header = httpRequest.getHeader("Authorization");
+        if (header == null) return null;
+        return header.replace("Bearer ", "");
     }
 
     public Instant getWhenExpires(){
