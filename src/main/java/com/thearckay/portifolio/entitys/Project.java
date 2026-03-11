@@ -2,6 +2,7 @@ package com.thearckay.portifolio.entitys;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.thearckay.portifolio.dto.ProjectRequest;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class Project {
     private String pictureUrl;
 
     @Column(columnDefinition = "TEXT")
-    private String githubPepository;
+    private String githubRepository;
 
     @Column(columnDefinition = "TEXT")
     private String deployUrl;
@@ -46,22 +47,34 @@ public class Project {
         this.title = title;
         this.description = description;
         this.pictureUrl = pictureUrl;
-        this.githubPepository = githubPepository;
+        this.githubRepository = githubPepository;
         this.deployUrl = deployUrl;
         this.order = order;
         this.tagList = tagList;
     }
-    public Project(Integer id, User user, String title, String description, String pictureUrl, String githubPepository, String deployUrl, Integer order, List<Tag> tagList) {
+    public Project(Integer id, User user, String title, String description, String pictureUrl, String githubRepository, String deployUrl, Integer order, List<Tag> tagList) {
         this.id = id;
         this.user = user;
         this.title = title;
         this.description = description;
         this.pictureUrl = pictureUrl;
-        this.githubPepository = githubPepository;
+        this.githubRepository = githubRepository;
         this.deployUrl = deployUrl;
         this.order = order;
         this.tagList = tagList;
     }
+
+    public static Project convertProjectRequestInProject(ProjectRequest projectRequest, User userFromContext){
+        Project project = new Project();
+        project.setOrder(projectRequest.order());
+        project.setUser(userFromContext);
+        project.setTitle(projectRequest.title());
+        project.setDescription(projectRequest.description());
+        project.setGithubRepository(projectRequest.githubRepository());
+        project.setDeployUrl(projectRequest.deployLink());
+        return project;
+    }
+
 
     public Boolean addTag(Tag tagToAdd){
         return getTagList().add(tagToAdd);
@@ -96,11 +109,11 @@ public class Project {
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
     }
-    public String getGithubPepository() {
-        return githubPepository;
+    public String getGithubRepository() {
+        return githubRepository;
     }
-    public void setGithubPepository(String githubPepository) {
-        this.githubPepository = githubPepository;
+    public void setGithubRepository(String githubPepository) {
+        this.githubRepository = githubPepository;
     }
     public String getDeployUrl() {
         return deployUrl;
