@@ -67,7 +67,7 @@ public class Project {
         this.tagList = tagList;
     }
 
-    public static Project convertProjectRequestInProject(ProjectRequest projectRequest, User userFromContext){
+    public static Project convertProjectRequestInProject(ProjectRequest projectRequest, User userFromContext) {
         Project project = new Project();
         project.setOrder(projectRequest.order());
         project.setUser(userFromContext);
