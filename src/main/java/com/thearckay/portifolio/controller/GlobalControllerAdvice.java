@@ -2,6 +2,7 @@ package com.thearckay.portifolio.controller;
 
 import com.thearckay.portifolio.dto.ApiResponse;
 import com.thearckay.portifolio.exceptions.LoginException;
+import com.thearckay.portifolio.exceptions.ProjectException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,6 +20,17 @@ public class GlobalControllerAdvice {
                 Collections.emptyList(),
                 error.getMessage(),
                 LocalDateTime.now()
+        );
+        return ResponseEntity.status(error.getStatus()).body(response);
+    }
+
+    @ExceptionHandler(ProjectException.class)
+    public ResponseEntity<ApiResponse> projectErrorHandler(ProjectException error){
+        ApiResponse response = new ApiResponse(
+                error.getStatus(),
+                Collections.emptyList(),
+                error.getMessage(),
+                Collections.emptyList()
         );
         return ResponseEntity.status(error.getStatus()).body(response);
     }

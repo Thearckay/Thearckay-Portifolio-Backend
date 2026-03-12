@@ -1,3 +1,4 @@
+/*
 package com.thearckay.portifolio.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,10 +12,10 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    @JsonIgnore
-    private Project project;
+//    @ManyToOne
+//    @JoinColumn(name = "project_id")
+//    @JsonIgnore
+//    private Project project;
 
     @Column(unique = true, length = 50)
     private String name;
@@ -49,3 +50,4 @@ public class Tag {
         this.name = name;
     }
 }
+*/

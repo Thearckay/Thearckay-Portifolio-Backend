@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.thearckay.portifolio.dto.ProjectRequest;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,11 +39,13 @@ public class Project {
     @Column(nullable = false, name = "project_order")
     private Integer order;
 
-    @OneToMany(mappedBy = "project")
-    private List<Tag> tagList;
+    @ElementCollection
+    @CollectionTable(name = "project_tags", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "tag_name")
+    private List<String> tagList= new ArrayList<>();
 
     public Project(){}
-    public Project(User user, String title, String description, String pictureUrl, String githubPepository, String deployUrl, Integer order, List<Tag> tagList) {
+    public Project(User user, String title, String description, String pictureUrl, String githubPepository, String deployUrl, Integer order, List<String> tagList) {
         this.user = user;
         this.title = title;
         this.description = description;
@@ -52,7 +55,7 @@ public class Project {
         this.order = order;
         this.tagList = tagList;
     }
-    public Project(Integer id, User user, String title, String description, String pictureUrl, String githubRepository, String deployUrl, Integer order, List<Tag> tagList) {
+    public Project(Integer id, User user, String title, String description, String pictureUrl, String githubRepository, String deployUrl, Integer order, List<String> tagList) {
         this.id = id;
         this.user = user;
         this.title = title;
@@ -72,11 +75,12 @@ public class Project {
         project.setDescription(projectRequest.description());
         project.setGithubRepository(projectRequest.githubRepository());
         project.setDeployUrl(projectRequest.deployLink());
+        project.setTagList(projectRequest.tagList());
         return project;
     }
 
 
-    public Boolean addTag(Tag tagToAdd){
+    public Boolean addTag(String tagToAdd){
         return getTagList().add(tagToAdd);
     }
     public Integer getId() {
@@ -127,10 +131,10 @@ public class Project {
     public void setOrder(Integer order) {
         this.order = order;
     }
-    public List<Tag> getTagList() {
+    public List<String> getTagList() {
         return tagList;
     }
-    public void setTagList(List<Tag> tagList) {
+    public void setTagList(List<String> tagList) {
         this.tagList = tagList;
     }
 }
