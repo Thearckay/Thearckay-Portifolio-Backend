@@ -180,7 +180,6 @@ public class ProjectService {
 
 
     public ResponseEntity<ApiResponse> deleteProjectById(UUID projectId, User userLogged) {
-
         Project projectToDelete = projectRepository.findProjectById(projectId)
                 .orElseThrow(() -> new ProjectException("Id do projeto inválido!", HttpStatus.NO_CONTENT.value()));
 
