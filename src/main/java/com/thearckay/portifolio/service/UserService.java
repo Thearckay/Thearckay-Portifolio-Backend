@@ -30,7 +30,6 @@ public class UserService {
             if (!user.getPassword().equals(loginRequest.password())) throw new LoginException("Senha incorreta", HttpStatus.FORBIDDEN.value());
 
             Token token = jwtService.createJwt(user.getEmail());
-
             ApiResponse response = new ApiResponse(
                     HttpStatus.OK.value(),
                     token,
@@ -39,7 +38,6 @@ public class UserService {
             );
 
             return ResponseEntity.ok(response);
-
         } catch (LoginException e) {
             throw new LoginException(e.getMessage(), e.getStatus());
         }

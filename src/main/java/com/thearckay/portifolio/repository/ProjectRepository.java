@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     List<Project> findProjectsByUser(User user);
     Optional<Project> findProjectByTitle(String title);
-    Optional<Project> findProjectById(Integer id);
+    Optional<Project> findProjectById(UUID id);
 }

@@ -33,7 +33,19 @@ public class CloudinaryConfig {
     }
 
     public String uploadFileAndReturnUrl(MultipartFile file) throws IOException {
-        Map uploadResult = this.cloudinary().uploader().upload(file.getBytes(), Collections.emptyMap());
+        Map uploadResult = uploadFile(file);
         return uploadResult.get("secure_url").toString();
+    }
+
+    public Map uploadFile(MultipartFile file) throws IOException {
+        return this.cloudinary().uploader().upload(file.getBytes(), Collections.emptyMap());
+    }
+
+    public void deleteFileByPublicId(String publicId, String typeFile) throws IOException {
+        this.cloudinary().uploader().destroy(publicId, ObjectUtils.asMap("resource_type",typeFile));
+    }
+
+    public void deleteImageByPublicId(String imagePublicId) throws IOException {
+        this.cloudinary().uploader().destroy(imagePublicId, Collections.emptyMap());
     }
 }

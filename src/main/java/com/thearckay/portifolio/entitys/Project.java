@@ -7,14 +7,16 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "projects")
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -30,6 +32,9 @@ public class Project {
     @Column(columnDefinition = "TEXT")
     private String pictureUrl;
 
+    @Column(columnDefinition = "Text")
+    private String imagePublicId;
+
     @Column(columnDefinition = "TEXT")
     private String githubRepository;
 
@@ -39,10 +44,11 @@ public class Project {
     @Column(nullable = false, name = "project_order")
     private Integer order;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "project_tags", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "tag_name")
     private List<String> tagList= new ArrayList<>();
+
 
     public Project(){}
     public Project(User user, String title, String description, String pictureUrl, String githubPepository, String deployUrl, Integer order, List<String> tagList) {
@@ -55,7 +61,7 @@ public class Project {
         this.order = order;
         this.tagList = tagList;
     }
-    public Project(Integer id, User user, String title, String description, String pictureUrl, String githubRepository, String deployUrl, Integer order, List<String> tagList) {
+    public Project(UUID id, User user, String title, String description, String pictureUrl, String githubRepository, String deployUrl, Integer order, List<String> tagList) {
         this.id = id;
         this.user = user;
         this.title = title;
@@ -74,7 +80,7 @@ public class Project {
         project.setTitle(projectRequest.title());
         project.setDescription(projectRequest.description());
         project.setGithubRepository(projectRequest.githubRepository());
-        project.setDeployUrl(projectRequest.deployLink());
+        project.setDeployUrl(projectRequest.deployUrl());
         project.setTagList(projectRequest.tagList());
         return project;
     }
@@ -83,10 +89,10 @@ public class Project {
     public Boolean addTag(String tagToAdd){
         return getTagList().add(tagToAdd);
     }
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
     public User getUser() {
@@ -136,5 +142,11 @@ public class Project {
     }
     public void setTagList(List<String> tagList) {
         this.tagList = tagList;
+    }
+    public String getImagePublicId() {
+        return imagePublicId;
+    }
+    public void setImagePublicId(String imagePublicId) {
+        this.imagePublicId = imagePublicId;
     }
 }

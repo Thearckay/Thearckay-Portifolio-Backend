@@ -8,11 +8,10 @@ public record ProjectRequest(
         String title,
         String description,
         Integer order,
-        @JsonProperty("tag_list")
+//        @JsonProperty("tag_list")
         List<String> tagList,
-        @JsonProperty("github_repository")
+//        @JsonProperty("github_repository")
         String githubRepository,
-        @JsonProperty("deploy_link")
-        String deployLink
+        String deployUrl
 ) {
 }

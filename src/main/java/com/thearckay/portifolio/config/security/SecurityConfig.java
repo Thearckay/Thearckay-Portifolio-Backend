@@ -3,6 +3,7 @@ package com.thearckay.portifolio.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,9 +30,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         return http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> corsConfigurationSource())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(httpRequest -> httpRequest
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/auth/verify/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/projects/frontend").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/projects/image/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

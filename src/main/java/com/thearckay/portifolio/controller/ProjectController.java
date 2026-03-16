@@ -12,6 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
@@ -19,12 +21,18 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @GetMapping("/frontend")
+    public ResponseEntity<ApiResponse> getProjectForFrontend(){
+        return projectService.getProjectsForFrontend();
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse> createProject(
             @RequestPart("project") ProjectRequest projectRequest,
-            @RequestPart("file") MultipartFile file,
+            @RequestPart(value = "file", required = false) MultipartFile file,
             @AuthenticationPrincipal User user)
     {
+        System.out.println("controller de criação chamado");
         return projectService.createProject(projectRequest, file, user);
     }
 
@@ -34,18 +42,28 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> getProject(@PathVariable("id") Integer projectId){
-        return projectService.getProjectById(projectId);
+    public ResponseEntity<ApiResponse> getProjectToUpdate(@PathVariable("id") UUID projectId){
+        return projectService.getProjectByIdToUpdate(projectId);
     }
 
-    @PutMapping
-    public ResponseEntity<ApiResponse> updateProject(@RequestBody Project projectToUpdate){
-        return projectService.updateProject(projectToUpdate);
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/{id}")
+    public ResponseEntity<ApiResponse> updateProject(
+            @PathVariable("id") UUID id,
+            @RequestPart("project") Project projectToUpdate,
+            @RequestPart(name = "file", required = false) MultipartFile file,
+            @AuthenticationPrincipal User user
+    ) throws Exception {
+        return projectService.updateProjectInformations(projectToUpdate, id, file, user);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteProjecr(@PathVariable("id") Integer projectId, @AuthenticationPrincipal User userLogged){
+    public ResponseEntity<ApiResponse> deleteProject(@PathVariable("id") UUID projectId, @AuthenticationPrincipal User userLogged){
         return projectService.deleteProjectById(projectId, userLogged);
+    }
+
+    @DeleteMapping("/image/{id}")
+    public ResponseEntity<ApiResponse> deleteImageProject(@PathVariable("id") UUID projectId){
+        return projectService.deleteProjectImageByProjectId(projectId);
     }
 
 }
