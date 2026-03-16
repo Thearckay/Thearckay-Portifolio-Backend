@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ./.gitattributes
-src/main/resources/application.properties
+src/main/resources/applicationOriginal.properties
 src/main/java/com/thearckay/portifolio/config/DatabaseSeeder.java
