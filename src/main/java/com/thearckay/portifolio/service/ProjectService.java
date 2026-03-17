@@ -151,6 +151,7 @@ public class ProjectService {
         ));
     }
 
+    // todo - verificar se não é a imagem padrão antes de deletar a imagem de fato
     public ResponseEntity<ApiResponse> deleteProjectImageByProjectId(UUID projectId){
 
         Project projectToDeleteImage = projectRepository.findProjectById(projectId)
